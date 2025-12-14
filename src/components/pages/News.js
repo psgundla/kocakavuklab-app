@@ -1,15 +1,10 @@
-
 import { useNavigate } from "react-router-dom";
 import confetti from "canvas-confetti";
-import {
-  VerticalTimeline,
-  VerticalTimelineElement
-} from "react-vertical-timeline-component";
-import "react-vertical-timeline-component/style.min.css";
 import PageHeader from "../common/PageHeader";
 import GoToTopButton from "../common/GoToTopButton";
 import {
-  getSortedNews
+  getSortedNews,
+  NEWS_CATEGORIES
 } from "../../data/newsData";
 // Icons
 import { FaMoneyBillWave, FaUserPlus, FaNewspaper, FaAward } from "react-icons/fa";
@@ -17,20 +12,21 @@ import { motion } from "framer-motion";
 import '../../App.css';
 
 const fadeInEffect = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 1.2 } }
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
 };
 
-const glowEffect = {
-  initial: { boxShadow: "0px 0px 0px rgba(0, 255, 0, 0)" },
-  animate: {
-    boxShadow: [
-      "0px 0px 20px rgba(0, 255, 0, 0.5)",
-      "0px 0px 30px rgba(0, 255, 0, 0.7)",
-      "0px 0px 20px rgba(0, 255, 0, 0.5)",
-      "0px 0px 0px rgba(0, 255, 0, 0)"
-    ],
-    transition: { duration: 2, repeat: 1 }
+const iconAppearEffect = {
+  hidden: { scale: 0, opacity: 0 },
+  visible: { 
+    scale: 1, 
+    opacity: 1, 
+    transition: { 
+      type: "spring",
+      stiffness: 200,
+      damping: 15,
+      duration: 0.5
+    } 
   }
 };
 
@@ -46,6 +42,12 @@ const getCategoryIcon = category => {
     default:
       return <FaNewspaper />;
   }
+};
+
+// Function to get category color
+const getCategoryColor = (category) => {
+  const cat = Object.values(NEWS_CATEGORIES).find((c) => c.id === category);
+  return cat ? cat.color : "#6B7280";
 };
 
 // Function to trigger confetti animation
@@ -74,61 +76,229 @@ function News() {
       {/* Page Header */}
       <PageHeader
         title="Latest News"
-        subtitle="Stay updated with our latest achievements and milestones!"
+        subtitle="Stay updated with our latest achievements!"
       />
 
-      {/* Timeline */}
-      <VerticalTimeline>
-        {allNews.map((item, index) => (
-          <VerticalTimelineElement
-            key={index}
-            date={item.dateDisplay}
-            contentStyle={{
-              background: "#fff",
-              color: "#333",
-              borderRadius: "10px",
-              boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)"
-            }}
-            contentArrowStyle={{ borderRight: "7px solid #fff" }}
-            iconStyle={{
-              background: "#fff",
-              color: "#333",
-              border: "2px solid #ccc"
-            }}
-            icon={getCategoryIcon(item.category)}
-            onTimelineElementClick={() => handleNewsClick(item)}
-            className="cursor-pointer"
-          >
-            {/* Apply animation only for new members */}
-            {item.category === "new_member"
-              ? <motion.div
-                  initial="hidden"
-                  animate="visible"
-                  variants={fadeInEffect}
-                >
-                  <motion.h3
-                    className="text-xl font-bold text-gray-900 hover:text-blue-600 transition-colors"
-                    variants={glowEffect}
-                  >
-                    {item.title}
-                  </motion.h3>
-                </motion.div>
-              : <h3 className="text-xl font-bold text-gray-900 hover:text-blue-600 transition-colors">
-                  {/* News Title with Hover Effect */}
-                  {item.title}
-                </h3>}
+      {/* Custom Timeline */}
+      <div className="max-w-6xl w-full mt-12 relative">
+        {/* Central Timeline Line */}
+        <div className="absolute left-1/2 transform -translate-x-1/2 w-1 bg-gray-300 h-full hidden md:block" />
 
-            {/* Description */}
-            <p className="text-gray-700">
-              {item.shortDescription.split("\n\n").map((para, idx) => (
-                <p key={idx} className="text-gray-700 mb-4">
-                  {para}
-                </p>
-              ))}
-            </p>
-          </VerticalTimelineElement>
-        ))}
-      </VerticalTimeline>
+        {/* News Items */}
+        <div className="space-y-12">
+          {allNews.map((item, index) => {
+            const categoryColor = getCategoryColor(item.category);
+            const isLeft = index % 2 === 0;
+
+            return (
+              <motion.div
+                key={index}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+                variants={fadeInEffect}
+                className="relative"
+              >
+                {/* Desktop Layout */}
+                <div className="hidden md:grid md:grid-cols-[1fr_auto_1fr] md:gap-0 items-start">
+                  {isLeft ? (
+                    <>
+                      {/* News Card - Left */}
+                      <div className="flex justify-end pr-12">
+                        <div
+                          onClick={() => handleNewsClick(item)}
+                          className="bg-white rounded-lg shadow-md p-6 max-w-md w-full cursor-pointer hover:shadow-xl transition-shadow"
+                        >
+                          <h3 className="text-xl font-bold text-gray-900 mb-4">
+                            {item.title}
+                          </h3>
+
+                          {/* Member Images */}
+                          {item.memberImages && item.memberImages.length > 0 && (
+                            <div className="flex gap-3 mb-4">
+                              {item.memberImages.map((memberImg, idx) => (
+                                <div
+                                  key={idx}
+                                  className="w-16 h-16 rounded-full overflow-hidden border-2 border-gray-200"
+                                >
+                                  <img
+                                    src={memberImg}
+                                    alt={`Member ${idx + 1}`}
+                                    className="w-full h-full object-cover"
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                          )}
+
+                          {/* Description */}
+                          <div className="text-sm text-gray-700">
+                            {item.shortDescription.split("\n\n").map((para, idx) => (
+                              <p key={idx} className="mb-2">
+                                {para}
+                              </p>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Centered Icon Circle */}
+                      <div className="flex justify-center relative z-10">
+                        <motion.div
+                          initial="hidden"
+                          whileInView="visible"
+                          viewport={{ once: true, margin: "-100px" }}
+                          variants={iconAppearEffect}
+                        >
+                          <div
+                            className="w-14 h-14 rounded-full flex items-center justify-center text-white shadow-lg border-4 border-white"
+                            style={{ backgroundColor: categoryColor }}
+                          >
+                            {getCategoryIcon(item.category)}
+                          </div>
+                        </motion.div>
+                      </div>
+
+                      {/* Date - Right */}
+                      <div className="flex items-start pl-12 pt-3">
+                        <span className="text-gray-500 font-medium text-base">
+                          {item.dateDisplay}
+                        </span>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      {/* Date - Left */}
+                      <div className="flex items-start justify-end pr-12 pt-3">
+                        <span className="text-gray-500 font-medium text-base">
+                          {item.dateDisplay}
+                        </span>
+                      </div>
+
+                      {/* Centered Icon Circle */}
+                      <div className="flex justify-center relative z-10">
+                        <motion.div
+                          initial="hidden"
+                          whileInView="visible"
+                          viewport={{ once: true, margin: "-100px" }}
+                          variants={iconAppearEffect}
+                        >
+                          <div
+                            className="w-14 h-14 rounded-full flex items-center justify-center text-white shadow-lg border-4 border-white"
+                            style={{ backgroundColor: categoryColor }}
+                          >
+                            {getCategoryIcon(item.category)}
+                          </div>
+                        </motion.div>
+                      </div>
+
+                      {/* News Card - Right */}
+                      <div className="flex justify-start pl-12">
+                        <div
+                          onClick={() => handleNewsClick(item)}
+                          className="bg-white rounded-lg shadow-md p-6 max-w-md w-full cursor-pointer hover:shadow-xl transition-shadow"
+                        >
+                          <h3 className="text-xl font-bold text-gray-900 mb-4">
+                            {item.title}
+                          </h3>
+
+                          {/* Member Images */}
+                          {item.memberImages && item.memberImages.length > 0 && (
+                            <div className="flex gap-3 mb-4">
+                              {item.memberImages.map((memberImg, idx) => (
+                                <div
+                                  key={idx}
+                                  className="w-16 h-16 rounded-full overflow-hidden border-2 border-gray-200"
+                                >
+                                  <img
+                                    src={memberImg}
+                                    alt={`Member ${idx + 1}`}
+                                    className="w-full h-full object-cover"
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                          )}
+
+                          {/* Description */}
+                          <div className="text-sm text-gray-700">
+                            {item.shortDescription.split("\n\n").map((para, idx) => (
+                              <p key={idx} className="mb-2">
+                                {para}
+                              </p>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+
+                {/* Mobile Layout */}
+                <div className="md:hidden">
+                  <div className="flex items-start gap-4 mb-4">
+                    {/* Icon Circle with animation */}
+                    <motion.div
+                      initial="hidden"
+                      whileInView="visible"
+                      viewport={{ once: true }}
+                      variants={iconAppearEffect}
+                    >
+                      <div
+                        className="w-12 h-12 rounded-full flex items-center justify-center text-white shadow-lg flex-shrink-0"
+                        style={{ backgroundColor: categoryColor }}
+                      >
+                        {getCategoryIcon(item.category)}
+                      </div>
+                    </motion.div>
+                    {/* Date */}
+                    <span className="text-gray-600 font-medium pt-2">
+                      {item.dateDisplay}
+                    </span>
+                  </div>
+
+                  {/* News Card */}
+                  <div
+                    onClick={() => handleNewsClick(item)}
+                    className="bg-white rounded-lg shadow-md p-6 cursor-pointer hover:shadow-xl transition-shadow"
+                  >
+                    <h3 className="text-xl font-bold text-gray-900 mb-4">
+                      {item.title}
+                    </h3>
+
+                    {/* Member Images */}
+                    {item.memberImages && item.memberImages.length > 0 && (
+                      <div className="flex gap-3 mb-4">
+                        {item.memberImages.map((memberImg, idx) => (
+                          <div
+                            key={idx}
+                            className="w-16 h-16 rounded-full overflow-hidden border-2 border-gray-200"
+                          >
+                            <img
+                              src={memberImg}
+                              alt={`Member ${idx + 1}`}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Description */}
+                    <div className="text-sm text-gray-700">
+                      {item.shortDescription.split("\n\n").map((para, idx) => (
+                        <p key={idx} className="mb-2">
+                          {para}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
 
       <GoToTopButton />
     </div>

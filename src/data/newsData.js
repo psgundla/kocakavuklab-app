@@ -15,7 +15,10 @@
  * - image: Imported image from assets folder
  * - tags: Array of relevant tags (optional)
  */
-
+// import publications from '../assets/news/publications.png';
+// import awardsRecognition from '../assets/news/awards_recognition.png';
+// import generalNewsImg from '../assets/news/general_news.png';
+// import grantsFundingImg from '../assets/news/grants_funding.png';
 // Import news images from assets
 import meritAwardeesImg from '../assets/news/Merit_Awardees.jpg';
 import umeaImg from '../assets/news/umea.png';
@@ -23,10 +26,6 @@ import newMembersImg from '../assets/news/new_members.png';
 import EKFSlogoImg from '../assets/news/elsekroner.png';
 import openDoorsImg from '../assets/news/opening-doors.png';
 import EmmyNoetherImg from '../assets/news/logo_emmy_noether.jpg';
-// import publications from '../assets/news/publications.png';
-// import awardsRecognition from '../assets/news/awards_recognition.png';
-// import generalNewsImg from '../assets/news/general_news.png';
-// import grantsFundingImg from '../assets/news/grants_funding.png';
 
 // Import member images for new member announcements
 import pranavImg from '../assets/members/Pranav.png';
