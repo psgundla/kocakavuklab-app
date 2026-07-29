@@ -1,29 +1,64 @@
-# Kocakavuk Lab - Computational Oncology Homepage
+# Kocakavuk Lab Website
 
-Welcome to the **Kocakavuk Lab** at the **West German Cancer Center** in **Universitätsklinikum Essen**.  
-Our lab focuses on **Computational Oncology**, leveraging advanced bioinformatics, deep learning, and multi-omics approaches to improve cancer diagnosis and treatment.
+The public website of the Kocakavuk Lab for Computational Oncology at the West
+German Cancer Center and University Hospital Essen.
 
-## 🌟 About the Lab
-This homepage serves as a central hub for:
-- 🧬 **Ongoing Projects** in computational oncology and bioinformatics
-- 🎓 **Opportunities** for collaborations, PhD/postdoc positions, and internships
-- 📰 **Latest Newsletters & Research Updates** from the lab is posted [here](https://kocakavuklab.com/news)
+## Quick start
 
-🔗 **Visit our homepage:** [kocakavuklab.com](https://kocakavuklab.com/)
+Requirements: Node.js 18 or newer and npm.
 
-## 🛠 Tech Stack
-This website is built using:
-- **React.js** with **Node JS** for frontend development
-- **Tailwind CSS** for responsive UI
-- **Bluesky Embed** for live updates
-- Hosted on **Cloudflare** for fast deployment
+```bash
+npm install
+npm start
+```
 
-🤝 Connect With Us
+Run the production check before opening a pull request:
 
-Stay updated with the latest from our lab:
--	Website: [Kocakavuk Lab Homepage](https://kocakavuklab.com/)
--	GitHub: [KocakavukLab](https://github.com/KocakavukLab)
--	Bluesky: [ekocakavuk](https://bsky.app/profile/ekocakavuk.bsky.social)
--	Email: [kocakavuklab](mailto:kocakavuklab@gmail.com)
+```bash
+npm test -- --watchAll=false
+npm run build
+```
 
-Maintained with ❤️ by [Pranav](https://biocoderr.github.io) & [Mahsa](https://github.com/MahsasadatNezamabadi) 
+## Updating website content
+
+Routine updates should not require editing page layout files.
+
+| Content | Edit this file | Assets |
+|---|---|---|
+| News | `src/data/newsData.js` | `src/assets/news/` |
+| Members | `src/data/membersData.js` | `src/assets/members/` |
+| Network and funding | `src/data/networkData.js` | `src/assets/logos/` |
+| Job postings | `src/data/jobsData.js` | No asset required |
+
+Add records inside the existing groups. Do not reorder or rename group IDs unless
+the page design itself is intentionally changing.
+
+## Project structure
+
+```text
+src/
+├── assets/              Images and logos
+├── components/
+│   ├── common/          Shared site components
+│   ├── jobs/            Job category and card layouts
+│   ├── members/         Member group and profile layouts
+│   ├── network/         Network/funding group layout
+│   └── pages/           Route-level page composition
+└── data/                Content edited during routine updates
+```
+
+Detailed maintenance instructions:
+
+- [Component layout](docs/COMPONENT_LAYOUT_README.md)
+- [Pull requests and issues](docs/PULL_REQUEST_AND_ISSUE_README.md)
+- [News maintenance](docs/NEWS_MAINTENANCE_GUIDE.md)
+- [Cloudflare deployment](docs/CLOUDFLARE_DEPLOYMENT.md)
+
+## Website
+
+- Website: [kocakavuklab.com](https://kocakavuklab.com/)
+- Bluesky: [@ekocakavuk](https://bsky.app/profile/ekocakavuk.bsky.social)
+- Email: [kocakavuklab@gmail.com](mailto:kocakavuklab@gmail.com)
+
+Maintained by [Pranav](https://biocoderr.github.io) and
+[Mahsa](https://github.com/MahsasadatNezamabadi).
