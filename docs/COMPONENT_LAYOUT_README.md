@@ -22,6 +22,7 @@ Edit `src/data/membersData.js`.
 - `memberGroups` fixes the section order.
 - Add a person to the `members` array associated with:
   - Postdoctoral Researchers
+  - Clinician Scientists
   - PhD Students
   - Master’s, MD & Bachelor’s Students
   - Alumni

@@ -32,7 +32,10 @@ const postdocs = [
     linkedin: "https://www.linkedin.com/in/quan-shi-11b5b49a",
     github: "https://github.com/shiquan",
     website: "https://shiquan.github.io/"
-  },
+  }
+];
+
+const clinicianScientists = [
   {
     id: "fabian-ullrich",
     name: "Fabian Ullrich, MD",
@@ -43,6 +46,22 @@ const postdocs = [
     twitter: "https://twitter.com/fa_ulle",
     researchgate: "https://www.researchgate.net/profile/Fabian-Ullrich",
     linkedin: "https://www.linkedin.com/in/fabian-u"
+  },
+  {
+    id: "cihat-karadag",
+    name: "Cihat Karadag, MD",
+    image: cihatImg,
+    role: "Clinician Scientist",
+    description: "Cihat Karadag is a Clinician Scientist with an interest in aggressive brain tumors and leverages real-world clinicogenomic glioma datasets.",
+    researchgate: "https://www.researchgate.net/profile/Cihat-Karadag"
+  },
+  {
+    id: "marco-tembrink",
+    name: "Marco Tembrink, MD",
+    image: marcoImg,
+    role: "UMEA Clinician Scientist",
+    description: "Marco Tembrink is a UMEA-funded Clinician Scientist studying complex genomic events in cancer, with a focus on CNS lymphomas.",
+    email: "mailto:marco.tembrink@uk-essen.de"
   }
 ];
 
@@ -72,22 +91,6 @@ const phdStudents = [
 ];
 
 const mastersMdBachelors = [
-  {
-    id: "cihat-karadag",
-    name: "Cihat Karadag, MD",
-    image: cihatImg,
-    role: "Clinician Scientist",
-    description: "Cihat Karadag is a Clinician Scientist with an interest in aggressive brain tumors and leverages real-world clinicogenomic glioma datasets.",
-    researchgate: "https://www.researchgate.net/profile/Cihat-Karadag"
-  },
-  {
-    id: "marco-tembrink",
-    name: "Marco Tembrink, MD",
-    image: marcoImg,
-    role: "UMEA Clinician Scientist",
-    description: "Marco Tembrink is a UMEA-funded Clinician Scientist studying complex genomic events in cancer, with a focus on CNS lymphomas.",
-    email: "mailto:marco.tembrink@uk-essen.de"
-  },
   {
     id: "jiawei-zhou",
     name: "Jiawei Zhou, MD",
@@ -121,6 +124,7 @@ const alumni = [
 // Keep this order fixed. Add or remove people only inside the matching members array.
 export const memberGroups = [
   { id: "postdocs", title: "Postdoctoral Researchers", members: postdocs },
+  { id: "clinician-scientists", title: "Clinician Scientists", members: clinicianScientists },
   { id: "phd-students", title: "PhD Students", members: phdStudents },
   { id: "masters-md-bachelors", title: "Master’s, MD & Bachelor’s Students", members: mastersMdBachelors },
   { id: "alumni", title: "Alumni", members: alumni, layout: "list" }
