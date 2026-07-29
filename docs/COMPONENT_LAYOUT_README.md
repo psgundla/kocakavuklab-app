@@ -83,6 +83,17 @@ Example:
 }
 ```
 
+## Moments
+
+Edit `src/data/momentsData.js` and add image files under
+`src/assets/moments/`. Each year contains an `events` list, and every event
+contains its own `photos` list. Keep the newest year and newest event first.
+
+The archive timeline, responsive alignment, and lightbox live in
+`src/components/pages/Moments.js`. Routine content updates should not require
+changes to that component. See
+[`MOMENTS_MAINTENANCE_GUIDE.md`](MOMENTS_MAINTENANCE_GUIDE.md) for an example.
+
 ## When layout code should change
 
 Only edit files below `src/components/pages/` when the existing visual design or

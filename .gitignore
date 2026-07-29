@@ -34,3 +34,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
+
+# Superdesign temporary component templates
+.superdesign/init/
+.superdesign/tmp/
+.superdesign/website/

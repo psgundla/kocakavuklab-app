@@ -24,6 +24,7 @@ This website is built using:
 - [Component layout](docs/COMPONENT_LAYOUT_README.md)
 - [Pull requests and issues](docs/PULL_REQUEST_AND_ISSUE_README.md)
 - [News maintenance](docs/NEWS_MAINTENANCE_GUIDE.md)
+- [Moments maintenance](docs/MOMENTS_MAINTENANCE_GUIDE.md)
 - [Cloudflare deployment](docs/CLOUDFLARE_DEPLOYMENT.md)
 
 🤝 Connect With Us

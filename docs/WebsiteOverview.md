@@ -26,6 +26,7 @@ Routine updates should not require editing page layout files.
 | Content | Edit this file | Assets |
 |---|---|---|
 | News | `src/data/newsData.js` | `src/assets/news/` |
+| Moments | `src/data/momentsData.js` | `src/assets/moments/` |
 | Members | `src/data/membersData.js` | `src/assets/members/` |
 | Network and funding | `src/data/networkData.js` | `src/assets/logos/` |
 | Job postings | `src/data/jobsData.js` | No asset required |

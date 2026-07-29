@@ -7,6 +7,7 @@ export const ROUTES = {
     NETWORK: '/network',
     PUBLICATIONS: '/publications',
     NEWS: '/news',
+    MOMENTS: '/moments',
     JOINUS: '/joinus',
     CONTACT: '/contact',
     PRIVACY_POLICY: '/privacypolicy',

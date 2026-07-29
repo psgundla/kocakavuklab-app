@@ -73,6 +73,11 @@ function NavBar() {
                         </NavLink>
                     </li>
                     <li className="nav-item">
+                        <NavLink to="/moments" className="nav-links" onClick={() => setClick(false)}>
+                            Moments
+                        </NavLink>
+                    </li>
+                    <li className="nav-item">
                         {linkDisabled ? (
                             <span className="nav-links text-gray-400 cursor-not-allowed">
                                 Join Us
