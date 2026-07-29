@@ -109,7 +109,7 @@ const mastersMdBachelors = [
   }
 ];
 
-const alumni = [
+export const alumni = [
   {
     id: "fatma-atak",
     name: "Fatma Atak",
@@ -129,3 +129,21 @@ export const memberGroups = [
   { id: "masters-md-bachelors", title: "Master’s, MD & Bachelor’s Students", members: mastersMdBachelors },
   { id: "alumni", title: "Alumni", members: alumni, layout: "list" }
 ];
+
+// Legacy page slots preserve the original visual order in Members.js.
+// Maintainers should edit the category arrays above, not the page component.
+const activeMembers = [...postdocs, ...clinicianScientists, ...phdStudents];
+const originalMemberOrder = [
+  "quan-shi",
+  "fabian-ullrich",
+  "pranav-gundla",
+  "yinchun-su",
+  "cihat-karadag",
+  "marco-tembrink"
+];
+
+export const members = originalMemberOrder.map((id) =>
+  activeMembers.find((member) => member.id === id)
+);
+export const memberTwo = mastersMdBachelors;
+export const blockTwo = [principalInvestigator];

@@ -26,3 +26,6 @@ export const jobGroups = [
   { id: "postdoc", title: "Postdoctoral Positions", jobs: postdocPositions },
   { id: "minijob", title: "Minijob Positions", jobs: minijobPositions }
 ];
+
+// Preserve the original card order used by JoinUs.js.
+export const jobPositions = [...minijobPositions, ...postdocPositions];

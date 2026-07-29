@@ -40,10 +40,7 @@ src/
 ├── assets/              Images and logos
 ├── components/
 │   ├── common/          Shared site components
-│   ├── jobs/            Job category and card layouts
-│   ├── members/         Member group and profile layouts
-│   ├── network/         Network/funding group layout
-│   └── pages/           Route-level page composition
+│   └── pages/           Original route-level page layouts
 └── data/                Content edited during routine updates
 ```
 

@@ -1,17 +1,16 @@
 # Component Layout
 
-This website uses a data-driven component structure. Content records live in
-`src/data/`; reusable components control presentation; page components only
-assemble sections. This keeps the visual layout stable during routine updates.
+The original page components control presentation and must remain unchanged
+during routine updates. Editable content records live in `src/data/`. This
+keeps the established website layout stable while giving maintainers one clear
+place to update content.
 
 ## Content flow
 
 ```text
 src/data/*.js
     ↓
-src/components/{members,network,jobs}/*
-    ↓
-src/components/pages/*
+src/components/pages/* (original layouts)
 ```
 
 ## Members
@@ -29,8 +28,7 @@ Edit `src/data/membersData.js`.
 
 Add the photograph to `src/assets/members/`, import it at the top of the data
 file, and give every record a unique, stable `id`. Social-link fields are
-optional. Do not edit `MemberCard.js`, `MemberGroup.js`, or `Members.js` for a
-routine personnel update.
+optional. Do not edit `Members.js` for a routine personnel update.
 
 Example:
 
@@ -57,7 +55,7 @@ The `networkGroups` array fixes the two page sections:
 
 Add a logo to `src/assets/logos/`, export it from `src/components/LogoName.js`,
 import it into the data file, and add the item to the appropriate array. Do not
-edit `NetworkGroup.js` or `Network.js` for a routine update.
+edit `Network.js` for a routine update.
 
 ## Job postings
 
@@ -87,6 +85,6 @@ Example:
 
 ## When layout code should change
 
-Only edit files below `src/components/` when the visual design or behavior must
-change for every record. Content-only pull requests should normally modify one
-data file and, if necessary, one new asset.
+Only edit files below `src/components/pages/` when the existing visual design or
+behavior is intentionally changing. Content-only pull requests should normally
+modify one data file and, if necessary, one new asset.

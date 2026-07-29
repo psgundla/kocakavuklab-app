@@ -4,7 +4,7 @@ import {
   NCTLogo, JSTLogo, ENLogo, IKLogo, SFBLogo, DHKLogo
 } from "../components/LogoName";
 
-const network = [
+const networkItems = [
   { id: "umeh", title: "UMEH", logo: UMEHLogo, url: "https://www.uni-essen-haematologie.de/" },
   { id: "esmo", title: "ESMO", logo: ESMOLogo, url: "https://www.esmo.org/" },
   { id: "nct", title: "NCT", logo: NCTLogo, url: "https://nct.dkfz.de/en/nct.html" },
@@ -17,7 +17,7 @@ const network = [
   { id: "cantar-network", title: "CANTAR", logo: CanTarLogo, url: "https://land.nrw/pressemitteilung/81-millionen-euro-landesfoerderung-fuer-fuenf-exzellente-forschungsnetzwerke" }
 ];
 
-const funding = [
+const fundingItems = [
   { id: "bif", title: "Boehringer Ingelheim Fonds", logo: BFondLogo, url: "https://www.bifonds.de/index.html" },
   { id: "cantar-funding", title: "CANTAR", logo: CanTarLogo, url: "https://land.nrw/pressemitteilung/81-millionen-euro-landesfoerderung-fuer-fuenf-exzellente-forschungsnetzwerke" },
   { id: "dfg", title: "DFG", logo: DFGLogo, url: "https://www.dfg.de/" },
@@ -31,6 +31,15 @@ const funding = [
 
 // These two groups determine the stable order of the page sections.
 export const networkGroups = [
-  { id: "network", title: "Collaborations & Network", items: network },
-  { id: "funding", title: "Funding", items: funding }
+  { id: "network", title: "Collaborations & Network", items: networkItems },
+  { id: "funding", title: "Funding", items: fundingItems }
 ];
+
+// Preserve the property names consumed by the original Network.js layout.
+export const networking = networkItems.map(({ id, title, logo, url }) => ({
+  nid: id,
+  ntitle: title,
+  nlogo: logo,
+  url
+}));
+export const funders = fundingItems;
