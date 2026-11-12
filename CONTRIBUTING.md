@@ -10,16 +10,15 @@ Use the content-update or bug issue form. Include the affected page, proposed co
 
 ## Submit a pull request
 
-1. Create a branch from the current approved target branch. Confirm the PR base; do not assume an old version branch is the release target.
-2. Make one focused change. Preserve existing IDs and URLs. Do not commit generated output, credentials or unapproved personal information.
-3. Run `npm run content:test`, `npm test` and `npm run build`. If using GitHub's editor, disclose that local checks were not run and wait for CI and a maintainer preview.
-4. Preview affected pages on desktop and mobile. For news, inspect both list and detail pages; for Moments, inspect the album viewer.
-5. Complete the PR template with sources, actual check results and preview evidence. Keep unfinished work as a draft PR.
-6. Request an independent reviewer and address feedback. New changes need review of the latest revision.
+Create a focused branch from current `main`. Describe what changes for website visitors, link sources and any related issue, and report actual tests and preview results. Use the PR template. Keep unfinished work as a draft and assign the responsible maintainer.
+
+Run `npm run content:generate`, `npm run content:test`, `npm test`, `npm run build`, and `git diff --check` before pushing. Dependency changes also need a matching npm lockfile and `npm audit`. Preserve unrelated edits and keep generated modules, credentials and unapproved personal information out of commits.
+
+Review the final diff and address review comments. Independent review is welcome when available; this sole-maintainer repository requires passing CI rather than another person's approval. Follow the merge policy below.
 
 ## Merge
 
-Merge only after required checks pass, conversations are resolved and at least one reviewer other than the author approves the latest changes. Use the repository's allowed merge method. Do not bypass protection or force-push a shared release branch.
+Merge only after required checks pass and conversations are resolved. The maintainer reviews the final diff; independent approval is optional. Use the repository's allowed merge method. Do not bypass protection or force-push a shared release branch.
 
 See the review policy below for enforcement and recovery. A merge may trigger deployment; verify the target and preview first.
 
@@ -51,7 +50,7 @@ Version 2 keeps editable content separate in the page design. Start here for rou
 5. Write the article below the second `---` line using ordinary Markdown: paragraphs, **bold**, lists and `[link text](https://example.org)`. Do not paste HTML or React code.
 6. Set `id` to the filename without `.md`. Existing IDs are public URLs; changing one breaks old links. Set `date` to the verified publication date in `YYYY-MM-DD` format and edit `dateDisplay` to match.
 7. Set `image` to a repository path such as `src/assets/news/example.jpg`. Optional `photoPair` contains exactly two image paths for the existing side-by-side layout. Optional `memberImages` contains member portrait paths. Optional `tags` contains text labels.
-8. Open a pull request. Explain the change, include sources, and request review. A maintainer can run the local preview and attach screenshots. Wait for passing checks and independent approval before merging.
+8. Open a pull request. Explain the change, include sources, and request review. A maintainer can run the local preview and attach screenshots. Wait for passing checks and resolved review conversations before merging.
 
 Categories: `grant`, `award`, `new_member`, `publication`, `general`. Dates sort newest first. Future dates are not automatically hidden: do not merge unpublished announcements early. Template files outside `content/` never render.
 
@@ -84,7 +83,7 @@ Validation catches malformed metadata, missing required fields, duplicate IDs/DO
 
 ## Design boundary
 
-Home hero/title, layout, typography, navigation, routes, forms, maps and legal/information page structure remain unchanged. Version 2 exposes the six existing content collections; Contact, Overview, Privacy, Imprint, Credits and 404 prose remains in existing components. Ask a developer for those changes rather than editing JSX without review. Further prose extraction should be a separate, appearance-preserving change with developer review.
+Home hero/title, layout, typography, navigation, routes, forms, maps and legal/information page structure remain unchanged. Version 2 exposes the six existing content collections; Overview, Privacy, Imprint, Credits and 404 prose remains in existing components. Ask a developer for those changes rather than editing JSX without review. Further prose extraction should be a separate, appearance-preserving change with developer review.
 
 ## Recovery
 
@@ -114,15 +113,15 @@ Write the news story here. Verify names, dates, titles and claims before submitt
 
 ## Review and merge policy
 
-These are the required project rules. GitHub enforcement has not been verified or changed as part of this documentation update.
+These are the required project rules. Live GitHub rules were verified on 2026-10-26; the saved payload matches the sole-maintainer policy.
 
 A repository administrator should configure the actual protected release/integration branches with:
 
 - Pull requests required before merging; no routine direct pushes.
-- At least one approving reviewer other than the PR author.
-- Dismiss stale approvals when new commits change the PR; require approval of the most recent reviewable push by someone other than its pusher.
+- Zero required approvals for the sole-maintainer workflow; request independent review when available.
+- Do not require latest-push approval or dismissal of stale approvals in the sole-maintainer workflow.
 - All review conversations resolved.
-- Required status check: `validate` from the `Content and build` workflow.
+- Required status checks: `validate` and `unit-tests` from GitHub Actions; CodeQL scanning must satisfy the configured security thresholds.
 - Branch up to date before merge, or the repository's existing merge queue if one is already used.
 - Force pushes and branch deletion blocked.
 - Bypass permissions limited to an explicitly agreed emergency administrator procedure, with follow-up review.
@@ -145,7 +144,7 @@ See [WebsiteOverview.md](WebsiteOverview.md) for architecture, page ownership an
 
 The five structured collections accept JSON, YAML (`.yaml`) or `.yml`. Keep exactly one file per collection: for example, `people.json` OR `people.yaml`, never both. Existing JSON files remain valid. News Markdown accepts JSON or YAML metadata between `---` delimiters. YAML dates stay strings; use spaces for indentation. Duplicate keys, aliases and custom tags are rejected. The same field, link and image validation applies to both formats.
 
-`npm run content:test` adds temporary examples for people, publications, network, jobs, Moments and news, verifies generated output, and checks that an invalid edit does not overwrite the last valid output. `npm test` checks those additions in the affected pages, including Overview and news detail, and smoke-tests the static pages. Fixtures live in a temporary directory and are deleted after tests; they never become published website content. Contact and legal pages do not accept data-driven blocks.
+`npm run content:test` adds temporary examples for people, publications, network, jobs, Moments and news, verifies generated output, and checks that an invalid edit does not overwrite the last valid output. `npm test` checks those additions in the affected pages, including Overview and news detail, and smoke-tests the static pages. Fixtures live in a temporary directory and are deleted after tests; they never become published website content. Legal pages do not accept data-driven blocks.
 
 Use optimized WebP assets for photographs and publication thumbnails. Before deleting an original, confirm its optimized replacement exists, search source/content/public files for references, and run content validation and a production build. Keep SVG organization marks as SVG. Git history retains removed originals; no history rewrite is needed to clean the current tree.
 
@@ -243,6 +242,10 @@ File: `content/publications.json`. Append one object to the top-level array:
 
 Use `hidden: true` to hide a record without deleting it. Status accepts `Published`, `Preprint`, `In-review`, or `Submitted`. Image and journal logo are optional. Both thumbnail and title link to `doi`. Verify the newest-first order and both links after updating.
 
+Author highlighting is derived from `content/people.json`, including the PI, all member groups and alumni. Use comma-separated authors in `Surname A. B.` format or the full name listed on the Members page. Matching ignores case, punctuation and accents, but requires every listed given-name initial; surname-only matches and missing middle initials are not accepted. Update member records rather than adding names to the publication component. Compound surnames and publication aliases need explicit support before relying on automatic matching. Names and initials cannot distinguish two different people with identical names and initials; verify authorship when adding a publication.
+
+The ESCAT v2 thumbnail (`annals-oncology-escat-v2-2026.webp`) renders page 1 of the user-supplied article-in-press PDF without changing its contents. Source: [Annals of Oncology](https://www.annalsofoncology.org/article/S0923-7534(26)06651-2/pdf), DOI `10.1016/j.annonc.2026.09.008`. The listing uses the verified online publication date, 21 October 2026, rather than the PDF's placeholder date.
+
 ### Network — `/network`
 
 File: `content/network.json`. Insert into `items` under the existing `network` group:
@@ -322,17 +325,15 @@ File: `content/jobs.json`. Add to the `jobs` array inside `phd`, `postdoc`, or `
 }
 ```
 
-Set status to `Closed` when recruitment ends. Closed records remain in content but disappear from the page. The View details button uses `applyLink`; general application buttons still lead to Contact.
+Set status to `Closed` when recruitment ends. Closed records remain in content but disappear from the page. The View details button uses `applyLink`; general application buttons open an email to `contact@kocakavuklab.com` with the subject `General application`.
 
-### Contact — `/contact`
+### Contact, Join Us and Donate
 
-File: `src/components/pages/Contact.jsx`; developer review required. There is no Contact YAML collection. An email link has this JSX shape; preserve existing classes and verify address before replacing values:
+The old Contact form is retired; its source remains recoverable in Git history. `/contact` redirects to `/joinus`. General applications use `mailto:contact@kocakavuklab.com?subject=General%20application`.
 
-```jsx
-<a href="mailto:verified-address@example.org">verified-address@example.org</a>
-```
+The shared footer contains the existing Hematology map, address and lab email. Verify map and email links on desktop and mobile after editing.
 
-Map link and iframe are separate URLs in the same component. Update them together. EmailJS delivery settings are separate from the displayed address; changing display text does not change the message recipient. Never submit test email to the live service without authorization.
+Donate is a visible, native disabled button in the header. It has no link or click handler; no donation page, foundation link, account details or checkout is published. Direct `/donate` requests use the existing not-found page. Payment and foundation integration require a separate change and authorization.
 
 ### Privacy, Imprint, Credits and 404
 
@@ -384,7 +385,35 @@ Shared navigation lives in `src/components/Navbar.jsx`; footer in `src/component
 ## Contact and responsive layout rules
 
 - Member cards show social/profile links only. Email fields are not supported by the people schema.
-- Footer “Email the lab”, Join Us “Email our PI”, and the Imprint address use `contact@kocakavuklab.com`. Contact shows the message form and location without a separate email address. EmailJS delivery configuration is managed separately.
-- Footer branding is centered. Below 651px, show branding only; hide footer columns and the copyright row.
+- Footer “Email the lab”, Join Us “Email our PI”, and the Imprint address use `contact@kocakavuklab.com`. Contact is retired; the shared footer shows the map and email, while Join Us handles general applications.
+- Footer branding is centered. Below 651px, show branding and contact/location details; hide footer navigation columns and the copyright row.
 - News uses a left rail and readable single-column cards below 900px, and alternating cards around a centered rail from 900px. Maintain 16px body text, keyboard-operable cards, visible focus, and reduced-motion support.
 - Check phones and tablets in portrait and landscape, plus desktop. Preserve story IDs, chronological order, detail links, and existing content.
+
+
+## Tests for fixes and features
+
+Every PR runs both `validate` (content validation and production build) and `unit-tests` (the full Vitest suite). Neither job uses path filters. A failing check blocks merge when the main branch ruleset is active.
+
+Bug issues must describe reproduction steps, expected behavior and regression-test acceptance criteria. Feature issues must explain the user need, acceptance criteria and testable edge cases. Issues describe work; tests run on the implementing PR.
+
+Bug fixes must add a regression test that fails before the fix and passes afterward. Features and behavior changes must add or update tests for the intended behavior and relevant failure or boundary cases. Tests must assert observable behavior rather than copy implementation details. Run the full existing suite to catch regressions.
+
+Content-only, documentation-only and dependency-only PRs may reuse existing checks when no behavior changes. Explain why a new test is unnecessary and report actual check results. Dependency changes also require `npm audit`; CSS tooling changes require checking the generated styles or a visual preview.
+
+The PR must link an issue when one exists, state which tests cover the change, and disclose untested behavior. The maintainer verifies test adequacy and seeks independent review when available. A green suite alone does not prove new behavior has meaningful coverage. Do not add arbitrary coverage percentages as a substitute for behavioral assertions.
+
+### Main branch enforcement
+
+`.github/main-ruleset.json` defines the requested GitHub rules: PRs required, zero required approvals, resolved review conversations, up-to-date branches, passing `validate` and `unit-tests` checks from GitHub Actions, CodeQL results with no high-or-higher security alerts or errors/warnings, and blocked force pushes and deletion. No bypass actors are configured.
+
+This file is an administrator import payload, not automatic enforcement. The live Protect main ruleset is active. Future edits to this JSON must be applied separately by an administrator and verified against live settings.
+
+
+## Publication and news updates
+
+Add a published paper to `content/publications.json` with its journal-verified title, DOI, author order, month/year, journal name and optimized thumbnail. Preserve existing records. When a published article supersedes a preprint, retain the preprint with `hidden: true` rather than deleting its provenance. Publication rows show the journal name below the authors.
+
+Add announcements as separate `content/news/<id>.md` files, with stable IDs, exact event/publication dates and source links. For paired photos use the existing two-item `photoPair` field. Summaries support paragraphs, bold and italic Markdown; links belong in the article body. Use the publication category for papers and general for lab milestones. A milestone must not show a new-member welcome heading.
+
+Verify dates and authorship against primary sources; distinguish study associations from clinical benefit. Confirm permission to publish photographs. Check news list/detail routes and the publications page, including images, ordering and hidden superseded records. Keep donation, payment, navigation and unrelated page work in separate PRs.
